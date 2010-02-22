@@ -1,0 +1,187 @@
+paramsearch 1.0 beta patch 28
+
+(c) copyright 2003-2007, Tilburg University
+
+Antal van den Bosch / antalb@uvt.nl / http://ilk.uvt.nl
+
+
+GENERAL INFORMATION
+
+On the basis of an instance base (a data file containing a list of
+examples of some classification task, where one example is represented
+by a list of feature values and a class label), paramsearch produces a
+combination of algorithmic parameters of a machine learning algorithm
+of choice, estimated to do well on unseen material from the same
+source as the input instance base. Paramsearch implements two
+heuristics for search in multi-dimensional algorithmic parameter
+spaces:
+
+1. cross-validated classifier wrapping, recombining parameter settings
+   pseudo-exhaustively, for small data sets (less than 1000 instances);
+2. wrapped progressive sampling for larger data sets (>=1000 instances).
+
+The main goal of paramsearch is to provide a fast approximation of
+utopian exhaustive parameter optimisation-by-validation. While small
+data sets do allow for some pseudo-exhaustive classifier wrapping, for
+larger data sets paramsearch uses wrapped progressive sampling, a
+combination of classifier wrapping and progressive sampling.
+
+A reasonably working metaphor for wrapped progressive sampling is that
+of a competition among mountaineers climbing a mountain. At the start
+of the competition, some thousand mountaineers run up the foot of the
+mountain and start to climb. After some time, the group of
+mountaineers that has been the least successful in terms of the height
+they reached (established by a one-dimensional clustering along the
+height dimension) is dropped out of the competition, and the race
+continues with the remaining contestants, higher up the mountain,
+where climbing becomes increasingly difficult. This
+competition-in-stages is repeated until only one mountaineer is left,
+or the top of the mountain is reached by a group of mountaineers, in
+which case one random contestant from this group is selected.
+
+Wrapped progressive sampling always starts with a 500-instance
+training set and a 100-instance test set. During the progressive
+sampling steps, the training set is exponentially grown to 80% of the
+full training set, while the size of the test set is synchronously
+grown at 20% of the size of the training set.
+
+Paramsearch currently supports the following machine learning
+algorithms: IB1, Fambl, SVM-light, Ripper, Zhang Le's Maxent, C4.5,
+Winnow, and Perceptron (the latter two using SNoW). More details
+below.
+
+
+INSTALLATION
+
+Unpack the paramsearch.1.0.tar.gz tarball, go to the paramsearch
+directory, and type "make":
+
+> tar zxf paramsearch.1.0.tar.gz
+> cd paramsearch
+> make
+
+This generates a bunch of executables. Install the "paramsearch"
+executable in a directory in your $PATH, e.g. /usr/local/bin if you
+have permission.
+
+> cp paramsearch /usr/local/bin
+
+Then, set the environment variable PARAMSEARCH_DIR to the paramsearch
+directory.
+
+In (t)csh: > setenv PARAMSEARCH_DIR /the/path/to/paramsearch
+In bash:   > export PARAMSEARCH_DIR=/the/path/to/paramsearch
+
+
+USAGE
+
+> paramsearch <algorithm> <trainingfile> [extra]
+
+Where <algorithm> is ib1, ib1-bin, ibn, fambl, svmlight, ripper, c4.5,
+winnow, or perceptron. <algorithm> is supposed to be installed, and
+present in $PATH. [extra] either contains an optional metric modifier
+for IB1, or the (obligatory!) number of classes for Winnow or
+Perceptron (the underlying software emulating Winnow and Perceptron,
+SNoW, demands a user specification of the number of classes).
+
+An optional metric modifier for IB1 is attached to -mO, -mM or -mJ,
+and can be used to ignore features or overrule similarity function
+settings for certain features (e.g. declare them as numeric). An
+example metric setting in which features 1 and 2 are ignored, and 4 is
+declared to be numeric: :I1,2:N4 .
+
+More details on the algorithms:
+
+- ib1        IB1, from the TiMBL software package. Required 
+             version: 5.0.0 (patch-3) or higher. Current 
+             tested version: 5.2 (RC1). 
+             See http://ilk.uvt.nl/timbl
+- ib1-bin    An emulation of IB1 inside the Fambl algorithm, 
+             with automatically binarized multi-valued features. 
+             Required version: 2.1.10 or higher. Current tested
+             version: 5.2 (RC1). 
+             See http://ilk.uvt.nl/~antalb
+- ibn        IB1 from TiMBL with numeric feature metrics only.
+             Required version: 5.0.0 (patch-3) or higher. Current
+             tested version: 5.2 (RC1). 
+             See http://ilk.uvt.nl/timbl
+- igtree     IGTree, from the TiMBL software package. Required
+             version: 5.0.0 (patch-3) or higher.
+             See http://ilk.uvt.nl/timbl
+- fambl      Fambl. Required version: 2.1.10 or higher.
+             See http://ilk.uvt.nl/~antalb
+- svmlight   SVM-Light by Thorsten Joachims. Tested version: 5.00. 
+             See http://svmlight.joachims.org 
+- ripper     Ripper by William Cohen. Tested version: V1 release
+             2.5 (patch 1). 
+             See http://www.wcohen.com
+- maxent     Maximum entropy classifier by Zhang Le. Tested
+             version: 20041229. See 
+             http://homepages.inf.ed.ac.uk/s0450736/maxent_toolkit.html
+- c4.5       C4.5 by J. Ross Quinlan. Tested version: release 8.
+             See http://www.cse.unsw.edu.au/~quinlan/ 
+- winnow     Sparse Network of Winnow as implemented in SNoW by
+             Carlson, Cumby, Rosen, & Roth. Tested version: 3.1.3
+             See http://l2r.cs.uiuc.edu/~danr/snow.html
+- perceptron Perceptron (sparse implementation) as implemented
+             in SNoW by Carlson, Cumby, Rosen, & Roth. Tested 
+             version: 3.1.3. 
+             See http://l2r.cs.uiuc.edu/~danr/snow.html
+
+Note that 
+
+(1) <trainingfile> must adhere to the data formatting 
+    requirements of <algorithm> (which are quite different among the
+    current set of supported algorithms; paramsearch does not do
+    any conversion)
+
+(2) C4.5 expects a "names" file declaring all feature value and
+    class names present in training and test material. This should
+    actually be named <filestem>.data.names for paramsearch to operate
+    correctly. (TiMBL or Ripper can generate names files automatically).
+
+(3) C4.5 and Ripper return errors, not accuracies.
+
+(4) Winnow and Perceptron demand a third command line argument stating 
+    the number of classes.
+
+
+ADDITIONAL TOOLS
+
+The paramsearch distribution contains the following tools:
+
+* runfull-<algorithm>: runs a full experiment with a <trainingfile>
+and a <testfile>, using the settings as logged in
+<trainingfile>.<algorithm>.bestsetting. This saves you from typing the
+best settings found in the *.bestsetting file.
+
+* make_binary.simpel.pl: written by Iris Hendrickx. Rewrites a TiMBL
+data file into a "binary" file suited either for SVMLight, Maxent, or
+SNoW (winnow and perceptron). 
+
+Usage: perl make_binary.simpel.pl [svm | snow]  trainfile ( testfile )
+
+See the file for more information.
+
+
+ACKNOWLEDGEMENTS
+
+Thanks to Iris Hendrickx, Walter Daelemans, Dan Roth, William Cohen,
+Zhang Le, Erwin Marsi, Piroska Lendvai, Erik Tjong Kim Sang, Bertjan
+Busser, Ko van der Sloot, Jakub Zavrel, Sabine Buchholz, Jorn
+Veenstra, Sander Canisius, Menno van Zaanen, Anders Noklestad, and
+Handre Groenewald for merciless testing and for passing along pieces
+of the puzzle.
+
+
+BUGS
+
+This is beta software, and may contain errors. Please send all bug
+reports to Antal van den Bosch <Antal.vdnBosch@uvt.nl>.
+
+
+DISCLAIMER
+
+Paramsearch comes WITHOUT ANY WARRANTY. Author nor distributor accept
+responsibility to anyone for the consequences of using it or for
+whether it serves any particular purpose or works at all.
