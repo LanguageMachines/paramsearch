@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
 		 dummy,settings);
 	  fprintf(doel,"echo ------------------------- %d of %d: %s %s\n",
 		  i+1,limit,dummy,settings);
-	  fprintf(doel,"Timbl -f $1 -t $2 ");
+	  fprintf(doel,"Timbl -f $1 -t $2 -a4 ");
 	  part=strtok(settings,".");
 	  while ((part!=NULL)&&
 		 (strcmp(part,"TRIBL2")!=0))
