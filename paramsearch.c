@@ -1,11 +1,12 @@
-/** paramsearch - do SOME heuristic parameter optimization search;
+/** Copyright (c) 1998-2010 Antal van den Bosch
+    ILK / Tilburg University
+
+    paramsearch - do SOME heuristic parameter optimization search;
     either exhaustive search with n-fold CV, or wrapped progressive
     sampling, with IB1 (from TiMBL), IB1 with binary input (from
     Fambl), IB1 with numeric input, TRIBL2 (from TiMBL), IGTree (from
     TiMBL), Fambl, SVM light, Ripper, maxent, C4.5, perceptron (from
     SNoW), winnow (from SNoW).
-
-    Antal, May 2003 - June 2010. Current version 1.1
 
     syntax: paramsearch <algorithm> <trainingfile> [extra]
 
@@ -15,6 +16,20 @@
     <algorithm>, and [extra] is an optional metric modifier (ib1
     only), or an obligatory number of classes (winnow and perceptron).
 
+
+    paramsearch is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+    
+    paramsearch is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, see <http://www.gnu.org/licenses/>.
+    
 */
 
 #include<stdio.h>
