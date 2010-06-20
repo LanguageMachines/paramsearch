@@ -4,7 +4,7 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define DENSITYBLOCKS 10
+#define DENSITYBLOCKS 100
 
 int main(int argc, char *argv[])
 {
@@ -64,6 +64,17 @@ int main(int argc, char *argv[])
 		 (i<DENSITYBLOCKS))
 	    i++;
 	  densityblock[i]++;
+	}
+
+      nrnewblocks=0;
+      for (i=0; i<DENSITYBLOCKS; i++)
+	{
+	  if (densityblock[i]!=0)
+	    {
+	      newblock[nrnewblocks]=densityblock[i];
+	      orignr[nrnewblocks]=i;
+	      nrnewblocks++;
+	    }
 	}
 
       for (i=0; i<nrnewblocks-1; i++)
