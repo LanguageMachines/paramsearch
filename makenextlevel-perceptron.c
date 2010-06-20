@@ -1,6 +1,7 @@
 /* makenextlevel-perceptron */
 
 #include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 
 #define DENSITYBLOCKS 10

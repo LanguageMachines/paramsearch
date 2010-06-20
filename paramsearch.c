@@ -1,19 +1,19 @@
 /** paramsearch - do SOME heuristic parameter optimization search;
     either exhaustive search with n-fold CV, or wrapped progressive
     sampling, with IB1 (from TiMBL), IB1 with binary input (from
-    Fambl), IB1 with numeric input, IGTree (from TiMBL), Fambl, SVM
-    light, Ripper, maxent, C4.5, perceptron (from SNoW), winnow (from
-    SNoW).
+    Fambl), IB1 with numeric input, TRIBL2 (from TiMBL), IGTree (from
+    TiMBL), Fambl, SVM light, Ripper, maxent, C4.5, perceptron (from
+    SNoW), winnow (from SNoW).
 
-    Antal, May 2003 - February 2007. Current version 1.0 beta patch 28
+    Antal, May 2003 - June 2010. Current version 1.1
 
     syntax: paramsearch <algorithm> <trainingfile> [extra]
 
-    where <algorithm> is ib1, ib1-bin, ibn, fambl, svmlight, ripper, 
-    maxent, c4.5, perceptron, or winnow, and <trainingfile> is a data 
-    file adhering to the conventions of <algorithm>, and [extra] is 
-    an optional metric modifier (ib1 only), or an obligatory number
-    of classes (winnow and perceptron).
+    where <algorithm> is ib1, ib1-bin, ibn, tribl, igtree, fambl,
+    svmlight, ripper, maxent, c4.5, perceptron, or winnow, and
+    <trainingfile> is a data file adhering to the conventions of
+    <algorithm>, and [extra] is an optional metric modifier (ib1
+    only), or an obligatory number of classes (winnow and perceptron).
 
 */
 
@@ -67,18 +67,18 @@ int main(int argc, char *argv[])
 
   // welcome message
   fprintf(stderr,"\nparamsearch v 1.0 beta patch 28\n\n");
-  fprintf(stderr,"Heuristic parameter optimization search for IB1, IGTree, Fambl, Ripper,\n");
-  fprintf(stderr,"SVM-light, Maximum entropy, C4.5, Winnow, Perceptron.\n\n");
-  fprintf(stderr,"Copyright 2003-2007 Tilburg University, ILK Research Group\n");
+  fprintf(stderr,"Heuristic parameter optimization search for IB1, IGTree, TRIBL2, Fambl,\n");
+  fprintf(stderr,"Ripper, SVM-light, Maximum entropy, C4.5, Winnow, Perceptron.\n\n");
+  fprintf(stderr,"Copyright 2003-2010 Tilburg University, ILK Research Group\n");
   fprintf(stderr,"Antal van den Bosch / antalb@uvt.nl / http://ilk.uvt.nl\n\n");
 
   if ((argc<3)||
       (argc>4))
     {
       fprintf(stderr,"Usage: paramsearch <algorithm> <trainingfile> [extra]\n\n");
-      fprintf(stderr,"where <algorithm> is ib1, ib1-bin, ibn, igtree, fambl, svmlight, ripper,\n");
-      fprintf(stderr,"maxent, c4.5, winnow, or perceptron, and [extra] is an optional metric\n");
-      fprintf(stderr,"modifier (ib1 only), or the number of classes (winnow and perceptron).\n");
+      fprintf(stderr,"where <algorithm> is ib1, ib1-bin, ibn, igtree, tribl2, fambl, svmlight,\n");
+      fprintf(stderr,"ripper, maxent, c4.5, winnow, or perceptron, and [extra] is an optional\n");
+      fprintf(stderr,"metric modifier (ib1 only), or the number of classes (winnow & perceptron).\n");
       fprintf(stderr,"\n");
       fprintf(stderr,"Note: <trainingfile> must adhere to the syntax / assumed format of\n");
       fprintf(stderr,"<algorithm>. ib1-bin is equivalent to ib1 except that all input\n");
@@ -137,6 +137,13 @@ int main(int argc, char *argv[])
       algo=12;
       strcpy(algostring,"igtree");
       strcpy(defaultsetting,"IGTree.gr.");
+    }
+
+  if (strcmp(argv[1],"tribl2")==0)
+    {
+      algo=13;
+      strcpy(algostring,"tribl2");
+      strcpy(defaultsetting,"TRIBL2.O.gr.k1.");
     }
 
   if (strcmp(argv[1],"svmlight")==0)
@@ -226,7 +233,8 @@ int main(int argc, char *argv[])
   system("rm -f algocheck >& /dev/null\n");
   if ((algo==0)||
       (algo==11)||
-      (algo==12))
+      (algo==12)||
+      (algo==13))
     {
       system("Timbl -V >& algocheck\n");
       bron=fopen("algocheck","r");
@@ -494,7 +502,8 @@ int main(int argc, char *argv[])
       (algo==2)||
       (algo==6)||
       (algo==11)||
-      (algo==12))
+      (algo==12)||
+      (algo==13))
     {
       if (DEBUG)
 	fprintf(stderr,"checking setting redundancies\n");
@@ -517,7 +526,8 @@ int main(int argc, char *argv[])
       // abort if there's only one class!
       // (except with SNoW which can have one class bit)
       if ((nrclasses==1)&&
-	  (!((algo==9)||(algo==10))))
+	  (!((algo==9)||
+	     (algo==10))))
 	{
 	  fprintf(stderr,"Error: data has one class. There is nothing to learn.\n\n");
 	  exit(1);

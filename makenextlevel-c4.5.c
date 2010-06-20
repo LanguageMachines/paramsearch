@@ -1,6 +1,7 @@
 /* makenextlevel-c4.5 */
 
 #include<stdio.h>
+#include<stdlib.h>
 #include<string.h>
 
 #define DENSITYBLOCKS 10

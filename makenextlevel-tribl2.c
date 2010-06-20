@@ -1,4 +1,4 @@
-/* makenextlevel-ib1-bin */
+/* makenextlevel */
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -32,12 +32,12 @@ int main(int argc, char *argv[])
   while (!feof(bron))
     {
       fscanf(bron,"%f %s ",
-	     &data[nrlines],settings);
+             &data[nrlines],settings);
       realscore=data[nrlines];
       if (realscore<lowest)
-	lowest=realscore;
+        lowest=realscore;
       if (realscore>highest)
-	highest=realscore;
+        highest=realscore;
       nrlines++;
     }
   fclose(bron);
@@ -50,20 +50,31 @@ int main(int argc, char *argv[])
     {
       highest+=0.001;
       fprintf(stderr,"%d settings in current selection\n",
-	      nrlines);
+              nrlines);
       fprintf(stderr,"computing density in intervals between lowest %6.2f and highest %6.2f\n",
-	      lowest,highest);
+              lowest,highest);
       for (i=0; i<DENSITYBLOCKS; i++)
-	densityblock[i]=0;
+        densityblock[i]=0;
       interval=(highest-lowest)/(1.*DENSITYBLOCKS);
       thisbound=0;
       for (j=0; j<nrlines; j++)
+        {
+          i=0;
+          while ((data[j]>=(lowest+((1.*(i+1))*interval)))&&
+                 (i<DENSITYBLOCKS))
+            i++;
+          densityblock[i]++;
+        }
+
+      nrnewblocks=0;
+      for (i=0; i<DENSITYBLOCKS; i++)
 	{
-	  i=0;
-	  while ((data[j]>=(lowest+((1.*(i+1))*interval)))&&
-		 (i<DENSITYBLOCKS))
-	    i++;
-	  densityblock[i]++;
+	  if (densityblock[i]!=0)
+	    {
+	      newblock[nrnewblocks]=densityblock[i];
+	      orignr[nrnewblocks]=i;
+	      nrnewblocks++;
+	    }
 	}
 
       for (i=0; i<nrnewblocks-1; i++)
@@ -85,7 +96,7 @@ int main(int argc, char *argv[])
       
       limit=nrlines-1;
       while (data[limit]<(lowest+((interval*(1.*orignr[lowestblocknr])))))
-	limit--;
+        limit--;
       limit++;
 
       fprintf(stderr,"keeping the top %d settings with accuracy %6.2f and up\n",
@@ -93,7 +104,8 @@ int main(int argc, char *argv[])
               lowest+interval*(1.*orignr[lowestblocknr]));
 
       if (limit==0)
-	limit=1;
+        limit=1;
+
     }
 
   doel=fopen("nextlevel.csh","w");
@@ -124,12 +136,11 @@ int main(int argc, char *argv[])
 		 dummy,settings);
 	  fprintf(doel,"echo ------------------------- %d of %d: %s %s\n",
 		  i+1,limit,dummy,settings);
-	  fprintf(doel,"Fambl -f $1 -t $2 -b -a ");
+	  fprintf(doel,"Timbl -f $1 -t $2 ");
 	  part=strtok(settings,".");
-          while ((part!=NULL)&&
-                 (strcmp(part,"IB1")!=0)&&
-		 (strcmp(part,"Fambl")!=0))
-            part=strtok(NULL,".");
+	  while ((part!=NULL)&&
+		 (strcmp(part,"TRIBL2")!=0))
+	    part=strtok(NULL,".");
 	  while (part!=NULL)
 	    {
 	      if (part[0]=='k')
@@ -140,51 +151,47 @@ int main(int argc, char *argv[])
 		fprintf(doel,"-%s ",
 			part);
 	      
-	      if (part[0]=='C')
-		fprintf(doel,"-%s ",
+	      if (part[0]=='M')
+		fprintf(doel,"-m%s ",
+			part);
+	      if (part[0]=='J')
+		fprintf(doel,"-m%s ",
+			part);
+	      if (part[0]=='O')
+		fprintf(doel,"-m%s ",
+			part);
+	      if (part[0]=='N')
+		fprintf(doel,"-m%s ",
 			part);
 	      
-	      if (part[0]=='z')
-		fprintf(doel,"-%s ",
-			part);
-	      
-	      if (part[0]=='y')
-		fprintf(doel,"-%s ",
-			part);
-	      
-	      if (strcmp(part,"M")==0)
-		fprintf(doel,"-m1 ");
-	      if (strcmp(part,"O")==0)
-		fprintf(doel,"-m0 ");
-	      if (strcmp(part,"J")==0)
-		fprintf(doel,"-m2 ");
-	      
+	      if (strcmp(part,"Z")==0)
+		fprintf(doel,"-dZ ");
 	      if (strcmp(part,"IL")==0)
-		fprintf(doel,"-d1 ");
+		fprintf(doel,"-dIL ");
 	      if (strcmp(part,"ID")==0)
-		fprintf(doel,"-d2 ");
-	      if (strcmp(part,"ED")==0)
-		fprintf(doel,"-d3 ");
+		fprintf(doel,"-dID ");
+	      if ((part[0]=='E')&&
+		  (part[1]=='D'))
+		fprintf(doel,"-d%s ",
+			part);
 	      
 	      if (strcmp(part,"nw")==0)
-		fprintf(doel,"-g0 ");
+		fprintf(doel,"-w0 ");
 	      if (strcmp(part,"gr")==0)
-		fprintf(doel,"-g2 ");
+		fprintf(doel,"-w1 ");
 	      if (strcmp(part,"ig")==0)
-		fprintf(doel,"-g1 ");
+		fprintf(doel,"-w2 ");
 	      if (strcmp(part,"x2")==0)
-		fprintf(doel,"-g3 ");
+		fprintf(doel,"-w3 ");
 	      if (strcmp(part,"sv")==0)
-		fprintf(doel,"-g4 ");
-	      if (strcmp(part,"ll")==0)
-		fprintf(doel,"-g5 ");
+		fprintf(doel,"-w4 ");
 	      
 	      part=strtok(NULL,".");
 	    }
-	  fprintf(doel,"-p >& /dev/null\n");
+	  fprintf(doel,"+vs +%% >& /dev/null\n");
 	  fprintf(doel,"foreach file (`ls $2*.%%`)\n");
 	  fprintf(doel,"  echo $file >> ana-tmp\n");
-	  fprintf(doel,"  cat $file >> ana-tmp\n");
+	  fprintf(doel,"  head -n 1 $file >> ana-tmp\n");
 	  fprintf(doel,"end\n");
 	  fprintf(doel,"rm $2*.out >& /dev/null\n");
 	  fprintf(doel,"rm $2*.%% >& /dev/null\n");
