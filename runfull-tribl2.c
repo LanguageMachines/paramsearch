@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
   char cmd[1024];
   char inter[1024];
 
-  sprintf(fnaam,"%s.ib1.bestsetting",
+  sprintf(fnaam,"%s.tribl2.bestsetting",
 	  argv[1]);
   bron=fopen(fnaam,"r");
   if (bron==NULL)

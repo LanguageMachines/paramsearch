@@ -1,6 +1,6 @@
-paramsearch 1.0 beta patch 28
+paramsearch 1.1
 
-(c) copyright 2003-2007, Tilburg University
+(c) copyright 2003-2010, Tilburg University
 
 Antal van den Bosch / antalb@uvt.nl / http://ilk.uvt.nl
 
@@ -53,11 +53,11 @@ below.
 
 INSTALLATION
 
-Unpack the paramsearch.1.0.tar.gz tarball, go to the paramsearch
+Unpack the paramsearch.1.1.tar.gz tarball, go to the paramsearch
 directory, and type "make":
 
-> tar zxf paramsearch.1.0.tar.gz
-> cd paramsearch
+> tar zxf paramsearch.1.1.tar.gz
+> cd paramsearch.1.1
 > make
 
 This generates a bunch of executables. Install the "paramsearch"
@@ -77,12 +77,13 @@ USAGE
 
 > paramsearch <algorithm> <trainingfile> [extra]
 
-Where <algorithm> is ib1, ib1-bin, ibn, fambl, svmlight, ripper, c4.5,
-winnow, or perceptron. <algorithm> is supposed to be installed, and
-present in $PATH. [extra] either contains an optional metric modifier
-for IB1, or the (obligatory!) number of classes for Winnow or
-Perceptron (the underlying software emulating Winnow and Perceptron,
-SNoW, demands a user specification of the number of classes).
+Where <algorithm> is ib1, ib1-bin, ibn, fambl, igtree, tribl2,
+svmlight, ripper, c4.5, winnow, or perceptron. <algorithm> is supposed
+to be installed, and present in $PATH. [extra] either contains an
+optional metric modifier for IB1, or the (obligatory!) number of
+classes for Winnow or Perceptron (the underlying software emulating
+Winnow and Perceptron, SNoW, demands a user specification of the
+number of classes).
 
 An optional metric modifier for IB1 is attached to -mO, -mM or -mJ,
 and can be used to ignore features or overrule similarity function
@@ -94,20 +95,18 @@ More details on the algorithms:
 
 - ib1        IB1, from the TiMBL software package. Required 
              version: 5.0.0 (patch-3) or higher. Current 
-             tested version: 5.2 (RC1). 
+             tested version: 6.3.
              See http://ilk.uvt.nl/timbl
 - ib1-bin    An emulation of IB1 inside the Fambl algorithm, 
              with automatically binarized multi-valued features. 
-             Required version: 2.1.10 or higher. Current tested
-             version: 5.2 (RC1). 
+             Required version: 2.1.10 or higher. 
              See http://ilk.uvt.nl/~antalb
 - ibn        IB1 from TiMBL with numeric feature metrics only.
-             Required version: 5.0.0 (patch-3) or higher. Current
-             tested version: 5.2 (RC1). 
-             See http://ilk.uvt.nl/timbl
-- igtree     IGTree, from the TiMBL software package. Required
-             version: 5.0.0 (patch-3) or higher.
-             See http://ilk.uvt.nl/timbl
+             Tested version: 5.2 (RC1). See http://ilk.uvt.nl/timbl
+- igtree     IGTree, from the TiMBL software package. Tested
+  	     version: 6.3. See http://ilk.uvt.nl/timbl
+- tribl2     TRIBL2, from the TiMBL software package. Tested
+  	     version: 6.3. See http://ilk.uvt.nl/timbl
 - fambl      Fambl. Required version: 2.1.10 or higher.
              See http://ilk.uvt.nl/~antalb
 - svmlight   SVM-Light by Thorsten Joachims. Tested version: 5.00. 
@@ -169,15 +168,16 @@ ACKNOWLEDGEMENTS
 Thanks to Iris Hendrickx, Walter Daelemans, Dan Roth, William Cohen,
 Zhang Le, Erwin Marsi, Piroska Lendvai, Erik Tjong Kim Sang, Bertjan
 Busser, Ko van der Sloot, Jakub Zavrel, Sabine Buchholz, Jorn
-Veenstra, Sander Canisius, Menno van Zaanen, Anders Noklestad, and
-Handre Groenewald for merciless testing and for passing along pieces
-of the puzzle.
+Veenstra, Sander Canisius, Menno van Zaanen, Anders Noklestad, Pei-yun
+Hsueh, Guy De Pauw, Gunn Inger Lyse, Svetoslav Marinov, Handre
+Groenewald, Kim Luyckx, and Maarten van Gompel for merciless testing
+and for passing along pieces of the puzzle.
 
 
 BUGS
 
-This is beta software, and may contain errors. Please send all bug
-reports to Antal van den Bosch <Antal.vdnBosch@uvt.nl>.
+This software is in development and may contain errors. Please send
+all bug reports to Antal van den Bosch <Antal.vdnBosch@uvt.nl>.
 
 
 DISCLAIMER

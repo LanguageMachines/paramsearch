@@ -247,11 +247,11 @@ foreach setting ( `cat $1.mega-settings` )
   $PARAMSEARCH_DIR/meanstd < ana-data2 | grep "mean:" | cut -c19- >> $1.exhaust.averages
 end
 rm -f ana-data ana-data2 ana-grep >& /dev/null
-rm -f $1.ib1.bestsetting >& /dev/null
+rm -f $1.tribl2.bestsetting >& /dev/null
 rm -f $1.exhaust.? >& /dev/null
 rm -f $1.mega-settings >& /dev/null
-$PARAMSEARCH_DIR/ana-convert $1.exhaust.averages | sort -k 1,1nr -k2,2 | head -n 1 > $1.ib1.bestsetting
-rm -f $1.ib1.log >& /dev/null
-$PARAMSEARCH_DIR/ana-convert $1.exhaust.averages | sort -k 1,1nr -k2,2 > $1.ib1.log
+$PARAMSEARCH_DIR/ana-convert $1.exhaust.averages | sort -k 1,1nr -k2,2 | head -n 1 > $1.tribl2.bestsetting
+rm -f $1.tribl2.log >& /dev/null
+$PARAMSEARCH_DIR/ana-convert $1.exhaust.averages | sort -k 1,1nr -k2,2 > $1.tribl2.log
 rm -f $1.exhaust.averages >& /dev/null
-echo "best setting found: " ; cat $1.ib1.bestsetting
+echo "best setting found: " ; cat $1.tribl2.bestsetting

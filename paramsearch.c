@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
   srand48((unsigned long int)time(NULL));
 
   // welcome message
-  fprintf(stderr,"\nparamsearch v 1.0 beta patch 28\n\n");
+  fprintf(stderr,"\nparamsearch v 1.1\n\n");
   fprintf(stderr,"Heuristic parameter optimization search for IB1, IGTree, TRIBL2, Fambl,\n");
   fprintf(stderr,"Ripper, SVM-light, Maximum entropy, C4.5, Winnow, Perceptron.\n\n");
   fprintf(stderr,"Copyright 2003-2010 Tilburg University, ILK Research Group\n");
