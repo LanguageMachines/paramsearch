@@ -3,7 +3,7 @@ rm ana-tmp >& /dev/null
 rm $2*.out >& /dev/null
 touch ana-tmp
 foreach w ( 0 1 2 )
-  Timbl -f $1 -t $2 -a1 -w$w +%
+  timbl -f $1 -t $2 -a1 -w$w +%
   foreach file (`ls $2*.%`)
     echo $file >> ana-tmp
     head -n 1 $file >> ana-tmp
