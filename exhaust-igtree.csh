@@ -11,7 +11,7 @@ if ( $2 == "10" ) then
     rm -f ana-tmp.$p >& /dev/null
     touch ana-tmp.$p
     foreach w ( 0 1 2 )
-      Timbl -f $1.$p.data -t $1.$p.test -a1 -w$w +% >& /dev/null
+      timbl -f $1.$p.data -t $1.$p.test -a1 -w$w +% >& /dev/null
       foreach file (`ls $1*.%`)
         echo $file >> ana-tmp.$p
         head -n 1 $file >> ana-tmp.$p
@@ -32,7 +32,7 @@ else
       rm -f ana-tmp.$p >& /dev/null
       touch ana-tmp.$p
       foreach w ( 0 1 2 )
-        Timbl -f $1.$p.data -t $1.$p.test -a1 -w$w +% >& /dev/null
+        timbl -f $1.$p.data -t $1.$p.test -a1 -w$w +% >& /dev/null
         foreach file (`ls $1*.%`)
           echo $file >> ana-tmp.$p
           head -n 1 $file >> ana-tmp.$p
@@ -52,7 +52,7 @@ else
       rm -f ana-tmp.$p >& /dev/null
       touch ana-tmp.$p
       foreach w ( 0 1 2 )
-        Timbl -f $1.$p.data -t $1.$p.test -a1 -w$w +% >& /dev/null
+        timbl -f $1.$p.data -t $1.$p.test -a1 -w$w +% >& /dev/null
         foreach file (`ls $1*.%`)
           echo $file >> ana-tmp.$p
           head -n 1 $file >> ana-tmp.$p

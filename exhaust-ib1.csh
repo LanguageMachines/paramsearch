@@ -12,7 +12,7 @@ if ( $2 == "10" ) then
     touch ana-tmp.$p
 
     foreach w ( 0 1 2 )
-      Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mO$5 +% >& /dev/null
+      timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mO$5 +% >& /dev/null
       foreach file (`ls $1*.%`)
         echo $file >> ana-tmp.$p
         head -n 1 $file >> ana-tmp.$p
@@ -20,8 +20,8 @@ if ( $2 == "10" ) then
         rm $1*.% >& /dev/null
       end
       if ( $3 == "1" ) then
-        Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 +% >& /dev/null
-        Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 +% >& /dev/null
+        timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 +% >& /dev/null
+        timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 +% >& /dev/null
         foreach file (`ls $1*.%`)
           echo $file >> ana-tmp.$p
           head -n 1 $file >> ana-tmp.$p
@@ -30,8 +30,8 @@ if ( $2 == "10" ) then
         rm $1*.% >& /dev/null
       else
         foreach l ( 1 2 )
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 -L$l +% >& /dev/null
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 -L$l +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 -L$l +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 -L$l +% >& /dev/null
           foreach file (`ls $1*.%`)
             echo $file >> ana-tmp.$p
             head -n 1 $file >> ana-tmp.$p
@@ -44,7 +44,7 @@ if ( $2 == "10" ) then
     foreach k ( 3 5 7 9 11 15 19 25 35 )
       foreach d ( Z IL ID ED1 )
         foreach w ( 0 1 2 )
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mO$5 -d$d +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mO$5 -d$d +% >& /dev/null
           foreach file (`ls $1*.%`)
             echo $file >> ana-tmp.$p
             head -n 1 $file >> ana-tmp.$p
@@ -52,8 +52,8 @@ if ( $2 == "10" ) then
   	    rm $1*.% >& /dev/null
           end
 	  if ( $3 == "1" ) then
-  	    Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d +% >& /dev/null
-  	    Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d +% >& /dev/null
+  	    timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d +% >& /dev/null
+  	    timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d +% >& /dev/null
   	    foreach file (`ls $1*.%`)
   	      echo $file >> ana-tmp.$p
   	      head -n 1 $file >> ana-tmp.$p
@@ -62,8 +62,8 @@ if ( $2 == "10" ) then
   	    rm $1*.% >& /dev/null
           else
             foreach l ( 1 2 )
-    	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d -L$l +% >& /dev/null
-    	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d -L$l +% >& /dev/null
+    	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d -L$l +% >& /dev/null
+    	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d -L$l +% >& /dev/null
   	        foreach file (`ls $1*.%`)
 	        echo $file >> ana-tmp.$p
   	        head -n 1 $file >> ana-tmp.$p
@@ -88,7 +88,7 @@ else
       rm -f ana-tmp.$p >& /dev/null
       touch ana-tmp.$p
       foreach w ( 0 1 2 )
-        Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mO$5 +% >& /dev/null
+        timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mO$5 +% >& /dev/null
         foreach file (`ls $1*.%`)
           echo $file >> ana-tmp.$p
           head -n 1 $file >> ana-tmp.$p
@@ -96,8 +96,8 @@ else
           rm $1*.% >& /dev/null
         end
         if ( $3 == "1" ) then
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 +% >& /dev/null
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 +% >& /dev/null
           foreach file (`ls $1*.%`)
             echo $file >> ana-tmp.$p
             head -n 1 $file >> ana-tmp.$p
@@ -106,8 +106,8 @@ else
           rm $1*.% >& /dev/null
         else
           foreach l ( 1 2 )
-            Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 -L$l +% >& /dev/null
-            Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 -L$l +% >& /dev/null
+            timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 -L$l +% >& /dev/null
+            timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 -L$l +% >& /dev/null
             foreach file (`ls $1*.%`)
               echo $file >> ana-tmp.$p
               head -n 1 $file >> ana-tmp.$p
@@ -120,7 +120,7 @@ else
       foreach k ( 3 5 7 9 11 15 19 25 35 )
         foreach d ( Z IL ID ED1 )
           foreach w ( 0 1 2 )
-            Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mO$5 -d$d +% >& /dev/null
+            timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mO$5 -d$d +% >& /dev/null
             foreach file (`ls $1*.%`)
     	      echo $file >> ana-tmp.$p
     	      head -n 1 $file >> ana-tmp.$p
@@ -128,8 +128,8 @@ else
     	      rm $1*.% >& /dev/null
             end
   	    if ( $3 == "1" ) then
-    	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d +% >& /dev/null
-    	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d +% >& /dev/null
+    	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d +% >& /dev/null
+    	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d +% >& /dev/null
     	      foreach file (`ls $1*.%`)
     	        echo $file >> ana-tmp.$p
     	        head -n 1 $file >> ana-tmp.$p
@@ -138,8 +138,8 @@ else
     	      rm $1*.% >& /dev/null
             else
               foreach l ( 1 2 )
-      	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d -L$l +% >& /dev/null
-      	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d -L$l +% >& /dev/null
+      	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d -L$l +% >& /dev/null
+      	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d -L$l +% >& /dev/null
     	        foreach file (`ls $1*.%`)
     	          echo $file >> ana-tmp.$p
     	          head -n 1 $file >> ana-tmp.$p
@@ -163,7 +163,7 @@ else
       rm -f ana-tmp.$p >& /dev/null
       touch ana-tmp.$p
       foreach w ( 0 1 2 )
-        Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mO$5 +% >& /dev/null
+        timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mO$5 +% >& /dev/null
         foreach file (`ls $1*.%`)
           echo $file >> ana-tmp.$p
           head -n 1 $file >> ana-tmp.$p
@@ -171,8 +171,8 @@ else
           rm $1*.% >& /dev/null
         end
         if ( $3 == "1" ) then
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 +% >& /dev/null
-          Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 +% >& /dev/null
+          timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 +% >& /dev/null
           foreach file (`ls $1*.%`)
             echo $file >> ana-tmp.$p
             head -n 1 $file >> ana-tmp.$p
@@ -181,8 +181,8 @@ else
           rm $1*.% >& /dev/null
         else
           foreach l ( 1 2 )
-            Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 -L$l +% >& /dev/null
-            Timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 -L$l +% >& /dev/null
+            timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mM$5 -L$l +% >& /dev/null
+            timbl -f $1.$p.data -t $1.$p.test -a0 -k1 -w$w -mJ$5 -L$l +% >& /dev/null
             foreach file (`ls $1*.%`)
               echo $file >> ana-tmp.$p
               head -n 1 $file >> ana-tmp.$p
@@ -195,7 +195,7 @@ else
       foreach k ( 3 5 7 9 11 15 19 25 35 )
         foreach d ( Z IL ID ED1 )
           foreach w ( 0 1 2 )
-            Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mO$5 -d$d +% >& /dev/null
+            timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mO$5 -d$d +% >& /dev/null
             foreach file (`ls $1*.%`)
     	      echo $file >> ana-tmp.$p
     	      head -n 1 $file >> ana-tmp.$p
@@ -203,8 +203,8 @@ else
     	      rm $1*.% >& /dev/null
             end
   	    if ( $3 == "1" ) then
-    	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d +% >& /dev/null
-    	      Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d +% >& /dev/null
+    	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d +% >& /dev/null
+    	      timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d +% >& /dev/null
     	      foreach file (`ls $1*.%`)
     	        echo $file >> ana-tmp.$p
     	        head -n 1 $file >> ana-tmp.$p
@@ -213,8 +213,8 @@ else
     	      rm $1*.% >& /dev/null
               else
                 foreach l ( 1 2 )
-      	        Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d -L$l +% >& /dev/null
-      	        Timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d -L$l +% >& /dev/null
+      	        timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mM$5 -d$d -L$l +% >& /dev/null
+      	        timbl -f $1.$p.data -t $1.$p.test -a0 -k$k -w$w -mJ$5 -d$d -L$l +% >& /dev/null
     	        foreach file (`ls $1*.%`)
     	          echo $file >> ana-tmp.$p
     	          head -n 1 $file >> ana-tmp.$p
