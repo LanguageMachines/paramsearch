@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
       part=strtok(NULL,"=");
     }
   
-  sprintf(inter,"%s -m %s.model -i 100 -b -c 0 >& /dev/null\n",
+  sprintf(inter,"%s -m %s.model -i 100 -b -c 0 >/dev/null 2>&1\n",
 	  argv[1],argv[1]);
   strcat(cmd,inter);
   fprintf(stderr,"commandline: %s",

@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
 
   doel=fopen("nextlevel.csh","w");
   fprintf(doel,"#! /bin/csh -f\n");
-  fprintf(doel,"rm ana-tmp >& /dev/null\n");
+  fprintf(doel,"rm ana-tmp >/dev/null 2>&1\n");
   fprintf(doel,"touch ana-tmp\n");
 
   if (limit<4)
@@ -194,11 +194,11 @@ int main(int argc, char *argv[])
 	  fprintf(doel,"echo %s >> ana-tmp\n",
 		  memsettings);
 	  fprintf(doel,"grep \"<<\" $1.out | tail -n 1 | cut -d\"(\" -f3 | cut -d\"%%\" -f 1 >> ana-tmp\n");
-	  fprintf(doel,"rm $1.out >& /dev/null\n");
+	  fprintf(doel,"rm $1.out >/dev/null 2>&1\n");
 	}
       fclose(bron);
     }
-  fprintf(doel,"rm ana-sorted >& /dev/null\n");
+  fprintf(doel,"rm ana-sorted >/dev/null 2>&1\n");
   fprintf(doel,"$PARAMSEARCH_DIR/ana-convert ana-tmp | sort -k 1,1n -k2,2 > ana-sorted\n");
 
   fclose(doel);

@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
   fprintf(stderr,"randomizing with seed %d\n",seed);
   
   srand48((unsigned long int) seed);
-  system("rm -rf effe >& /dev/null\n");
+  system("rm -rf effe >/dev/null 2>&1\n");
   doel=fopen("effe","w");
   fgets(line,LINELEN,bron);
   while (!feof(bron))

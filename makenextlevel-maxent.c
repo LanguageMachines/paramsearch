@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
 
   doel=fopen("nextlevel.csh","w");
   fprintf(doel,"#! /bin/csh -f\n");
-  fprintf(doel,"rm ana-tmp >& /dev/null\n");
+  fprintf(doel,"rm ana-tmp >/dev/null 2>&1\n");
   fprintf(doel,"touch ana-tmp\n");
 
   if (limit<4)
@@ -170,18 +170,18 @@ int main(int argc, char *argv[])
 	      
 	      part=strtok(NULL,"=");
 	    }
-	  fprintf(doel,"$1 -m $1.model -i 100 -b -c0 >& /dev/null\n");
+	  fprintf(doel,"$1 -m $1.model -i 100 -b -c0 >/dev/null 2>&1\n");
 	  fprintf(doel,"maxent -p -m $1.model $2 >& $2.out\n");
 	  fprintf(doel,"echo %s >> ana-tmp\n",
 		  memsettings);
 	  fprintf(doel,"cut -c11- $2.out | cut -d\"%%\" -f1 >> ana-tmp\n");
-	  fprintf(doel,"rm $2.out >& /dev/null\n");
-	  fprintf(doel,"rm $1.model >& /dev/null\n");
+	  fprintf(doel,"rm $2.out >/dev/null 2>&1\n");
+	  fprintf(doel,"rm $1.model >/dev/null 2>&1\n");
 
 	}
       fclose(bron);
     }
-  fprintf(doel,"rm ana-sorted >& /dev/null\n");
+  fprintf(doel,"rm ana-sorted >/dev/null 2>&1\n");
   fprintf(doel,"$PARAMSEARCH_DIR/ana-convert ana-tmp | sort -k 1,1nr -k2,2 > ana-sorted\n");
 
   fclose(doel);

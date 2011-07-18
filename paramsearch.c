@@ -245,7 +245,7 @@ int main(int argc, char *argv[])
 
   // check if algorithm is there.
   
-  system("rm -f algocheck >& /dev/null\n");
+  system("rm -f algocheck >/dev/null 2>&1\n");
   if ((algo==0)||
       (algo==11)||
       (algo==12)||
@@ -336,7 +336,7 @@ int main(int argc, char *argv[])
       fprintf(stderr,"using ripper version:\n%s\n",
 	      line);
       fclose(bron);
-      system("rm -f algocheck >& /dev/null\n");
+      system("rm -f algocheck >/dev/null 2>&1\n");
       system("predict >& algocheck\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
@@ -421,10 +421,10 @@ int main(int argc, char *argv[])
       fclose(bron);
     }
 
-  system("rm -f algocheck >& /dev/null\n");
+  system("rm -f algocheck >/dev/null 2>&1\n");
 
   // some cleanup
-  sprintf(commandline,"rm -f ana-tmp ana-sorted %s.*.%% %s.*.out >& /dev/null\n",
+  sprintf(commandline,"rm -f ana-tmp ana-sorted %s.*.%% %s.*.out >/dev/null 2>&1\n",
 	  argv[2],argv[2]);
   system(commandline);
 
@@ -696,11 +696,11 @@ int main(int argc, char *argv[])
   // make randomized version of data
   sprintf(randomizedname,"paramtmpfile.%d",
 	  lrand48()%32768);
-  sprintf(commandline,"cp %s %s >& /dev/null\n",
+  sprintf(commandline,"cp %s %s >/dev/null 2>&1\n",
 	  argv[2],randomizedname);
   system(commandline);
 
-  sprintf(commandline,"$PARAMSEARCH_DIR/randomize %s %d >& /dev/null\n",
+  sprintf(commandline,"$PARAMSEARCH_DIR/randomize %s %d >/dev/null 2>&1\n",
 	  randomizedname,SEED);
   system(commandline);
 
@@ -934,7 +934,7 @@ int main(int argc, char *argv[])
   fprintf(stderr,"\n\n");
 
   // cleanup time
-  sprintf(commandline,"rm %s.nrinst %s.nrclasses %s.classes %s.featcount %s.feat %s >& /dev/null\n",
+  sprintf(commandline,"rm %s.nrinst %s.nrclasses %s.classes %s.featcount %s.feat %s >/dev/null 2>&1\n",
 	  argv[2],argv[2],argv[2],argv[2],argv[2],randomizedname);
   system(commandline);
   
