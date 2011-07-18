@@ -1,4 +1,4 @@
-/** Copyright (c) 1998-2010 Antal van den Bosch
+/** Copyright (c) 1998-2011 Antal van den Bosch
     ILK / Tilburg University
 
     paramsearch - do SOME heuristic parameter optimization search;
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
       (algo==12)||
       (algo==13))
     {
-      system("Timbl -V >& algocheck\n");
+      system("timbl -v >& algocheck\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
@@ -262,7 +262,7 @@ int main(int argc, char *argv[])
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
-	  fprintf(stderr,"Error: Timbl: command not found.\n\n");
+	  fprintf(stderr,"Error: timbl: command not found.\n\n");
 	  exit(1);
 	}
       fprintf(stderr,"using TiMBL version:\n%s\n",

@@ -1,6 +1,6 @@
-paramsearch 1.1
+paramsearch 1.2
 
-copyright (c) 2003-2010, Antal van den Bosch
+copyright (c) 2003-2011, Antal van den Bosch
 
     paramsearch is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -107,19 +107,19 @@ declared to be numeric: :I1,2:N4 .
 More details on the algorithms:
 
 - ib1        IB1, from the TiMBL software package. Required 
-             version: 5.0.0 (patch-3) or higher. Current 
-             tested version: 6.3.
+             version: 6.4 or higher. Current 
+             tested version: 6.4.
              See http://ilk.uvt.nl/timbl
-- ib1-bin    An emulation of IB1 inside the Fambl algorithm, 
+- ib1-bin    An emulation of IB1 inside the Fambl package,
              with automatically binarized multi-valued features. 
              Required version: 2.1.10 or higher. 
              See http://ilk.uvt.nl/~antalb
 - ibn        IB1 from TiMBL with numeric feature metrics only.
-             Tested version: 5.2 (RC1). See http://ilk.uvt.nl/timbl
+             Tested version: 6.4. See http://ilk.uvt.nl/timbl
 - igtree     IGTree, from the TiMBL software package. Tested
-  	     version: 6.3. See http://ilk.uvt.nl/timbl
+  	     version: 6.4. See http://ilk.uvt.nl/timbl
 - tribl2     TRIBL2, from the TiMBL software package. Tested
-  	     version: 6.3. See http://ilk.uvt.nl/timbl
+  	     version: 6.4. See http://ilk.uvt.nl/timbl
 - fambl      Fambl. Required version: 2.1.10 or higher.
              See http://ilk.uvt.nl/~antalb
 - svmlight   SVM-Light by Thorsten Joachims. Tested version: 5.00. 

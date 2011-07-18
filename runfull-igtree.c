@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 	 dummy,settings);
   fprintf(stderr,"best settings: %s %s\n",
 	  dummy,settings);
-  sprintf(cmd,"Timbl -f %s -t %s -a1 ",
+  sprintf(cmd,"timbl -f %s -t %s -a1 ",
 	      argv[1],argv[2]);
   part=strtok(settings,".");
   while ((part!=NULL)&&
