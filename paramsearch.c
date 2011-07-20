@@ -61,11 +61,13 @@ int main(int argc, char *argv[])
   char topsetting[CANDIDATELEN];
   char delimiter[32];
   char dummy[CANDIDATELEN];
-  int  i,j,nrinst,learntime,algo,nrcandidatesettings,randompick,nrfeat,nrclasses;
+  int  i,j,nrinst,learntime,algo,nrcandidatesettings,randompick;
+  int  result,nrfeat,nrclasses;
   int  startline=0,counter,lowestfreq,readfreq,thr,lowestfreqflag=0;
   char hasspace,hastab,hascomma,twocflag=0;
   float fract,topscore,readscore;
   FILE *bron,*doel;
+  char *resultc;
   char defaultin;
   time_t begintime,endtime;
 
@@ -81,10 +83,10 @@ int main(int argc, char *argv[])
   srand48((unsigned long int)time(NULL));
 
   // welcome message
-  fprintf(stderr,"\nparamsearch v 1.1\n\n");
+  fprintf(stderr,"\nparamsearch v 1.2\n\n");
   fprintf(stderr,"Heuristic parameter optimization search for IB1, IGTree, TRIBL2, Fambl,\n");
   fprintf(stderr,"Ripper, SVM-light, Maximum entropy, C4.5, Winnow, Perceptron.\n\n");
-  fprintf(stderr,"Copyright 2003-2010 Tilburg University, ILK Research Group\n");
+  fprintf(stderr,"Copyright 2003-2011 Tilburg University, ILK Research Group\n");
   fprintf(stderr,"Antal van den Bosch / antalb@uvt.nl / http://ilk.uvt.nl\n\n");
 
   if ((argc<3)||
@@ -201,7 +203,8 @@ int main(int argc, char *argv[])
       sscanf(argv[3],"%d",&lowestfreqflag);
       if (lowestfreqflag<2)
 	{
-	  fprintf(stderr,"Error: number of classes should be 2 or larger; %d is too low\n\n");
+	  fprintf(stderr,"Error: number of classes should be 2 or larger; %d is too low\n\n",
+		  lowestfreqflag);
 	  exit(1);
 	}
       sprintf(defaultsetting,"p-1.35=d-0.8=t-4.0=c-%d=r-2=s-0.0",
@@ -245,20 +248,20 @@ int main(int argc, char *argv[])
 
   // check if algorithm is there.
   
-  system("rm -f algocheck >/dev/null 2>&1\n");
+  result=system("rm -f algocheck >/dev/null 2>&1\n");
   if ((algo==0)||
       (algo==11)||
       (algo==12)||
       (algo==13))
     {
-      system("timbl -v >& algocheck\n");
+      result=system("timbl -v > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check TiMBL version\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
@@ -272,16 +275,16 @@ int main(int argc, char *argv[])
   if ((algo==2)||
       (algo==6))
     {
-      system("Fambl >& algocheck\n");
+      result=system("Fambl > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check Fambl version\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if (!feof(bron))
-	fgets(line,MAXLINELEN,bron);
+	resultc=fgets(line,MAXLINELEN,bron);
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
@@ -294,20 +297,20 @@ int main(int argc, char *argv[])
     }
   if (algo==4)
     {
-      system("which svm_learn > algocheck; which svm_classify >> algocheck\n");
+      result=system("which svm_learn > algocheck; which svm_classify >> algocheck\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check SVM\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if (!strstr(line,"svm_learn"))
 	{
 	  fprintf(stderr,"Error: svm_learn: command not found.\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if (!strstr(line,"svm_classify"))
 	{
 	  fprintf(stderr,"Error: svm_classify: command not found.\n\n");
@@ -317,16 +320,16 @@ int main(int argc, char *argv[])
     }
   if (algo==5)
     {
-      system("ripper >& algocheck\n");
+      result=system("ripper > algocheck > 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check Ripper\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if (!feof(bron))
-	fgets(line,MAXLINELEN,bron);
+	resultc=fgets(line,MAXLINELEN,bron);
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
@@ -336,15 +339,15 @@ int main(int argc, char *argv[])
       fprintf(stderr,"using ripper version:\n%s\n",
 	      line);
       fclose(bron);
-      system("rm -f algocheck >/dev/null 2>&1\n");
-      system("predict >& algocheck\n");
+      result=system("rm -f algocheck >/dev/null 2>&1\n");
+      result=system("predict > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check Ripper version\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
@@ -355,14 +358,14 @@ int main(int argc, char *argv[])
     }
   if (algo==7)
     {
-      system("maxent >& algocheck\n");
+      result=system("maxent > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check maxent\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
@@ -375,21 +378,21 @@ int main(int argc, char *argv[])
     }
   if (algo==8)
     {
-      system("c4.5 >& algocheck\n");
+      result=system("c4.5 > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check c4.5\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
 	  fprintf(stderr,"Error: c4.5: command not found.\n\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       fprintf(stderr,"using C4.5 version:\n%s\n",
 	      line);
       fclose(bron);
@@ -397,20 +400,20 @@ int main(int argc, char *argv[])
   if ((algo==9)||
       (algo==10))
     {
-      system("snow >& algocheck\n");
+      result=system("snow > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
 	  fprintf(stderr,"Write error - could not check SNoW version\n");
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       if (!feof(bron))
-	fgets(line,MAXLINELEN,bron);
+	resultc=fgets(line,MAXLINELEN,bron);
       if (!feof(bron))
-	fgets(line2,MAXLINELEN,bron);
+	resultc=fgets(line2,MAXLINELEN,bron);
       if (!feof(bron))
-	fgets(line3,MAXLINELEN,bron);
+	resultc=fgets(line3,MAXLINELEN,bron);
       if (strstr(line,"ommand not found"))
 	{
 	  fprintf(stderr,"Error: snow: command not found.\n\n");
@@ -421,12 +424,12 @@ int main(int argc, char *argv[])
       fclose(bron);
     }
 
-  system("rm -f algocheck >/dev/null 2>&1\n");
+  result=system("rm -f algocheck >/dev/null 2>&1\n");
 
   // some cleanup
   sprintf(commandline,"rm -f ana-tmp ana-sorted %s.*.%% %s.*.out >/dev/null 2>&1\n",
 	  argv[2],argv[2]);
-  system(commandline);
+  result=system(commandline);
 
   // allocation of candidate settings buffers
   candidatesettings=malloc(MAXNRCANDIDATES*sizeof(char*));
@@ -438,7 +441,7 @@ int main(int argc, char *argv[])
   // determine number of instances 
   sprintf(commandline,"wc -l %s > %s.nrinst\n",
 	  argv[2],argv[2]);
-  system(commandline);
+  result=system(commandline);
   sprintf(fname,"%s.nrinst",
 	  argv[2]);
   bron=fopen(fname,"r");
@@ -447,7 +450,7 @@ int main(int argc, char *argv[])
       fprintf(stderr,"Write error\n\n");
       exit(1);
     }
-  fscanf(bron,"%d",&nrinst);
+  result=fscanf(bron,"%d",&nrinst);
   fclose(bron);
 
   // below 10 instances, just write default setting for robustness' sake
@@ -480,7 +483,7 @@ int main(int argc, char *argv[])
 	      argv[2]);
       exit(1);
     }
-  fgets(line,MAXLINELEN,bron);
+  resultc=fgets(line,MAXLINELEN,bron);
   fclose(bron);
   hastab=hascomma=hasspace=0;
   if (strstr(line,","))
@@ -525,7 +528,7 @@ int main(int argc, char *argv[])
       // find out the number of classes 
       sprintf(commandline,"cut -d\"%c\" -f %d %s > %s.classes; sort -u %s.classes | wc > %s.nrclasses\n",
 	      delimiter[0],nrfeat,argv[2],argv[2],argv[2],argv[2]);
-      system(commandline);
+      result=system(commandline);
       sprintf(fname,"%s.nrclasses",
 	      argv[2]);
       bron=fopen(fname,"r");
@@ -535,7 +538,7 @@ int main(int argc, char *argv[])
 		  fname);
 	  exit(1);
 	}
-      fscanf(bron,"%d",&nrclasses);
+      result=fscanf(bron,"%d",&nrclasses);
       fclose(bron);
       
       // abort if there's only one class!
@@ -557,7 +560,7 @@ int main(int argc, char *argv[])
 	  if (DEBUG)
 	    fprintf(stderr,"commandline: %s",
 		    commandline);
-	  system(commandline);
+	  result=system(commandline);
 	  sprintf(fname,"%s.featcount",
 		  argv[2]);
 	  bron=fopen(fname,"r");
@@ -567,14 +570,14 @@ int main(int argc, char *argv[])
 		      fname);
 	      exit(1);
 	    }
-	  fgets(line,MAXLINELEN,bron);
+	  resultc=fgets(line,MAXLINELEN,bron);
 	  while (!feof(bron))
 	    {
 	      sscanf(line,"%d %s ",
 		     &readfreq,dummy);
 	      if (readfreq<lowestfreq)
 		lowestfreq=readfreq;
-	      fgets(line,MAXLINELEN,bron);
+	      resultc=fgets(line,MAXLINELEN,bron);
 	    }
 	  fclose(bron);
 	}
@@ -611,7 +614,7 @@ int main(int argc, char *argv[])
       // find out the number of classes 
       sprintf(commandline,"cut -d\"%c\" -f %d %s > %s.classes; sort -u %s.classes | wc > %s.nrclasses\n",
 	      delimiter[0],nrfeat,argv[2],argv[2],argv[2],argv[2]);
-      system(commandline);
+      result=system(commandline);
       sprintf(fname,"%s.nrclasses",
 	      argv[2]);
       bron=fopen(fname,"r");
@@ -621,7 +624,7 @@ int main(int argc, char *argv[])
 		  fname);
 	  exit(1);
 	}
-      fscanf(bron,"%d",&nrclasses);
+      result=fscanf(bron,"%d",&nrclasses);
       fclose(bron);
       
       // abort if there's only one class!
@@ -694,15 +697,15 @@ int main(int argc, char *argv[])
   time(&begintime);
 
   // make randomized version of data
-  sprintf(randomizedname,"paramtmpfile.%d",
+  sprintf(randomizedname,"paramtmpfile.%ld",
 	  lrand48()%32768);
   sprintf(commandline,"cp %s %s >/dev/null 2>&1\n",
 	  argv[2],randomizedname);
-  system(commandline);
+  result=system(commandline);
 
   sprintf(commandline,"$PARAMSEARCH_DIR/randomize %s %d >/dev/null 2>&1\n",
 	  randomizedname,SEED);
-  system(commandline);
+  result=system(commandline);
 
 
   // determine whether to go for exhaustive 10-fold, or for wrapped progressive sampling
@@ -726,7 +729,7 @@ int main(int argc, char *argv[])
 	      lowestfreqflag,
 	      twocflag,
 	      metricstring);
-      system(commandline);
+      result=system(commandline);
 
       // check the logfile. are there ties? Then (1) pick the default
       // setting or (2) pick a random setting
@@ -742,14 +745,14 @@ int main(int argc, char *argv[])
 	}
       nrcandidatesettings=0;
       defaultin=0;
-      fscanf(bron,"%f %s ",
+      result=fscanf(bron,"%f %s ",
 	     &topscore,candidatesettings[0]);
       if (strstr(candidatesettings[0],defaultsetting))
 	{
 	  defaultin=1;
 	  strcpy(topsetting,candidatesettings[0]);
 	}
-      fscanf(bron,"%f %s ",
+      result=fscanf(bron,"%f %s ",
 	     &readscore,readsetting);
       while ((!feof(bron))&&
 	     (readscore==topscore))
@@ -761,7 +764,7 @@ int main(int argc, char *argv[])
 	      defaultin=1;
 	      strcpy(topsetting,candidatesettings[nrcandidatesettings]);
 	    }
-	  fscanf(bron,"%f %s ",
+	  result=fscanf(bron,"%f %s ",
 		 &readscore,readsetting);
 	}
       fclose(bron);
@@ -808,7 +811,7 @@ int main(int argc, char *argv[])
       fract=0.8*nrinst;
       sprintf(commandline,"$PARAMSEARCH_DIR/generate-steplist %d > %s.steplist\n",
 	      (int) fract,argv[2]);
-      system(commandline);
+      result=system(commandline);
 
       // start the process
       fprintf(stderr,"starting WPS with first pseudo-exhaustive round, stepsize 500\n");
@@ -819,7 +822,7 @@ int main(int argc, char *argv[])
 	      twocflag,
 	      randomizedname,
 	      metricstring);
-      system(commandline);
+      result=system(commandline);
       
       // check the logfile. are there ties? Then (1) pick the default
       // setting or (2) pick a random setting
@@ -837,14 +840,14 @@ int main(int argc, char *argv[])
 		  fname);
 	  exit(1);
 	}
-      fgets(line,MAXLINELEN,bron);
+      resultc=fgets(line,MAXLINELEN,bron);
       counter=0;
       while (!feof(bron))
 	{
 	  counter++;
 	  if (line[0]=='-')
 	    startline=counter;
-	  fgets(line,MAXLINELEN,bron);
+	  resultc=fgets(line,MAXLINELEN,bron);
 	}
       fclose(bron);
 
@@ -859,9 +862,9 @@ int main(int argc, char *argv[])
 	  exit(1);
 	}
       for (j=0; j<startline; j++)
-	fgets(line,MAXLINELEN,bron);
+	resultc=fgets(line,MAXLINELEN,bron);
       defaultin=0;
-      fscanf(bron,"%f %s ",
+      result=fscanf(bron,"%f %s ",
 	     &topscore,candidatesettings[0]);
       nrcandidatesettings=1;
       if (strstr(candidatesettings[0],defaultsetting))
@@ -873,7 +876,7 @@ int main(int argc, char *argv[])
       while ((!feof(bron))&&
 	     (readscore==topscore))
 	{
-	  fscanf(bron,"%f %s ",
+	  result=fscanf(bron,"%f %s ",
 		 &readscore,readsetting);
 	  if (readscore==topscore)
 	    {
@@ -936,7 +939,7 @@ int main(int argc, char *argv[])
   // cleanup time
   sprintf(commandline,"rm %s.nrinst %s.nrclasses %s.classes %s.featcount %s.feat %s >/dev/null 2>&1\n",
 	  argv[2],argv[2],argv[2],argv[2],argv[2],randomizedname);
-  system(commandline);
+  result=system(commandline);
   
   return 0;
 }

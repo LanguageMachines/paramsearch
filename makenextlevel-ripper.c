@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
 	      
 	      part=strtok(NULL,"=");
 	    }
-	  fprintf(doel,">& $1.out\n");
+	  fprintf(doel,"> $1.out 2>&1\n");
 	  fprintf(doel,"echo %s >> ana-tmp\n",
 		  memsettings);
 	  fprintf(doel,"grep \"Test\" $1.out | cut -c20- | cut -d\"%%\" -f1 >> ana-tmp\n");

@@ -1,6 +1,6 @@
 #! /bin/csh -f
-rm ana-tmp >& /dev/null
-rm $2*.out >& /dev/null
+rm ana-tmp > /dev/null 2>&1
+rm $2*.out > /dev/null 2>&1
 touch ana-tmp
 foreach w ( 0 1 2 )
   timbl -f $1 -t $2 -a1 -w$w +%
@@ -8,8 +8,8 @@ foreach w ( 0 1 2 )
     echo $file >> ana-tmp
     head -n 1 $file >> ana-tmp
   end
-  rm $2*.out >& /dev/null
-  rm $2*.% >& /dev/null
+  rm $2*.out > /dev/null 2>&1
+  rm $2*.% > /dev/null 2>&1
 end
-rm -f ana-sorted >& /dev/null
+rm -f ana-sorted > /dev/null 2>&1
 $PARAMSEARCH_DIR/ana-convert ana-tmp | sort -k 1,1nr -k2,2 > ana-sorted

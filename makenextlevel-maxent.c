@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 	      part=strtok(NULL,"=");
 	    }
 	  fprintf(doel,"$1 -m $1.model -i 100 -b -c0 >/dev/null 2>&1\n");
-	  fprintf(doel,"maxent -p -m $1.model $2 >& $2.out\n");
+	  fprintf(doel,"maxent -p -m $1.model $2 > $2.out 2>&1\n");
 	  fprintf(doel,"echo %s >> ana-tmp\n",
 		  memsettings);
 	  fprintf(doel,"cut -c11- $2.out | cut -d\"%%\" -f1 >> ana-tmp\n");

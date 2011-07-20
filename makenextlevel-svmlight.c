@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
 	      part=strtok(NULL,"=");
 	    }
 	  fprintf(doel,"$1 $1.model >/dev/null 2>&1\n");
-	  fprintf(doel,"svm_classify $2 $1.model >& $2.out\n");
+	  fprintf(doel,"svm_classify $2 $1.model > $2.out 2>&1\n");
 	  fprintf(doel,"echo %s >> ana-tmp\n",
 		  memsettings);
 	  fprintf(doel,"grep \"Accuracy\" $2.out | cut -d\":\" -f2 | cut -d\"%%\" -f1 >> ana-tmp\n");
