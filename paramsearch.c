@@ -822,6 +822,7 @@ int main(int argc, char *argv[])
 	      twocflag,
 	      randomizedname,
 	      metricstring);
+
       result=system(commandline);
       
       // check the logfile. are there ties? Then (1) pick the default

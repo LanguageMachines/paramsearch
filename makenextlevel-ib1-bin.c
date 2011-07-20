@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
   FILE *bron,*doel;
-  int  nrlines=0,limit=1,i,j,lowestblocknr,nrnewblocks;
+  int  nrlines=0,limit=1,i,j,lowestblocknr,nrnewblocks,result;
   char dummy[1024];
   char settings[1024];
   char *part;
@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   highest=0.;
   while (!feof(bron))
     {
-      fscanf(bron,"%f %s ",
+      result=fscanf(bron,"%f %s ",
 	     &data[nrlines],settings);
       realscore=data[nrlines];
       if (realscore<lowest)
@@ -109,13 +109,13 @@ int main(int argc, char *argv[])
 
   doel=fopen("nextlevel.csh","w");
   fprintf(doel,"#! /bin/csh -f\n");
-  fprintf(doel,"rm ana-tmp >/dev/null 2>&1\n");
+  fprintf(doel,"rm ana-tmp >& /dev/null\n");
   fprintf(doel,"touch ana-tmp\n");
 
   if (limit<4)
     {
       bron=fopen("ana-sorted","r");
-      fscanf(bron,"%s %s ",
+      result=fscanf(bron,"%s %s ",
 	     dummy,settings);
       fclose(bron);
       
@@ -131,7 +131,7 @@ int main(int argc, char *argv[])
       bron=fopen("ana-sorted","r");
       for (i=0; i<limit; i++)
 	{
-	  fscanf(bron,"%s %s ",
+	  result=fscanf(bron,"%s %s ",
 		 dummy,settings);
 	  fprintf(doel,"echo ------------------------- %d of %d: %s %s\n",
 		  i+1,limit,dummy,settings);
@@ -192,17 +192,17 @@ int main(int argc, char *argv[])
 	      
 	      part=strtok(NULL,".");
 	    }
-	  fprintf(doel,"-p >/dev/null 2>&1\n");
+	  fprintf(doel,"-p >& /dev/null\n");
 	  fprintf(doel,"foreach file (`ls $2*.%%`)\n");
 	  fprintf(doel,"  echo $file >> ana-tmp\n");
 	  fprintf(doel,"  cat $file >> ana-tmp\n");
 	  fprintf(doel,"end\n");
-	  fprintf(doel,"rm $2*.out >/dev/null 2>&1\n");
-	  fprintf(doel,"rm $2*.%% >/dev/null 2>&1\n");
+	  fprintf(doel,"rm $2*.out >& /dev/null\n");
+	  fprintf(doel,"rm $2*.%% >& /dev/null\n");
 	}
       fclose(bron);
     }
-  fprintf(doel,"rm ana-sorted >/dev/null 2>&1\n");
+  fprintf(doel,"rm ana-sorted >& /dev/null\n");
   fprintf(doel,"$PARAMSEARCH_DIR/ana-convert ana-tmp | sort -k 1,1nr -k2,2 > ana-sorted\n");
 
   fclose(doel);

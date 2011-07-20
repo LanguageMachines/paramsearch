@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
   FILE *bron,*doel;
-  int  nrlines=0,limit=1,i,j,lowestblocknr,nrnewblocks;
+  int  nrlines=0,limit=1,i,j,lowestblocknr,nrnewblocks,result;
   char dummy[1024];
   char settings[1024];
   char memsettings[1024];
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
   highest=0.;
   while (!feof(bron))
     {
-      fscanf(bron,"%f %s ",
+      result=fscanf(bron,"%f %s ",
              &data[nrlines],settings);
       realscore=data[nrlines];
       if (realscore<lowest)
@@ -112,13 +112,13 @@ int main(int argc, char *argv[])
 
   doel=fopen("nextlevel.csh","w");
   fprintf(doel,"#! /bin/csh -f\n");
-  fprintf(doel,"rm ana-tmp >/dev/null 2>&1\n");
+  fprintf(doel,"rm ana-tmp >& /dev/null\n");
   fprintf(doel,"touch ana-tmp\n");
 
   if (limit<4)
     {
       bron=fopen("ana-sorted","r");
-      fscanf(bron,"%s %s ",
+      result=fscanf(bron,"%s %s ",
 	     dummy,settings);
       fclose(bron);
       
@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
       bron=fopen("ana-sorted","r");
       for (i=0; i<limit; i++)
 	{
-	  fscanf(bron,"%s %s ",
+	  result=fscanf(bron,"%s %s ",
 		 dummy,settings);
 	  strcpy(memsettings,settings);
 	  fprintf(doel,"echo ------------------------- %d of %d: %s %s\n",
@@ -170,18 +170,18 @@ int main(int argc, char *argv[])
 	      
 	      part=strtok(NULL,"=");
 	    }
-	  fprintf(doel,"$1 -m $1.model -i 100 -b -c0 >/dev/null 2>&1\n");
-	  fprintf(doel,"maxent -p -m $1.model $2 > $2.out 2>&1\n");
+	  fprintf(doel,"$1 -m $1.model -i 100 -b -c0 >& /dev/null\n");
+	  fprintf(doel,"maxent -p -m $1.model $2 >& $2.out\n");
 	  fprintf(doel,"echo %s >> ana-tmp\n",
 		  memsettings);
 	  fprintf(doel,"cut -c11- $2.out | cut -d\"%%\" -f1 >> ana-tmp\n");
-	  fprintf(doel,"rm $2.out >/dev/null 2>&1\n");
-	  fprintf(doel,"rm $1.model >/dev/null 2>&1\n");
+	  fprintf(doel,"rm $2.out >& /dev/null\n");
+	  fprintf(doel,"rm $1.model >& /dev/null\n");
 
 	}
       fclose(bron);
     }
-  fprintf(doel,"rm ana-sorted >/dev/null 2>&1\n");
+  fprintf(doel,"rm ana-sorted >& /dev/null\n");
   fprintf(doel,"$PARAMSEARCH_DIR/ana-convert ana-tmp | sort -k 1,1nr -k2,2 > ana-sorted\n");
 
   fclose(doel);
