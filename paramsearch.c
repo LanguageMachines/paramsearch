@@ -4,9 +4,9 @@
     paramsearch - do SOME heuristic parameter optimization search;
     either exhaustive search with n-fold CV, or wrapped progressive
     sampling, with IB1 (from TiMBL), IB1 with binary input (from
-    Fambl), IB1 with numeric input, TRIBL2 (from TiMBL), IGTree (from
-    TiMBL), Fambl, SVM light, Ripper, maxent, C4.5, perceptron (from
-    SNoW), winnow (from SNoW).
+    Fambl), IB1 with numeric input, IB1 with sparse input, TRIBL2
+    (from TiMBL), IGTree (from TiMBL), Fambl, SVM light, Ripper,
+    maxent, C4.5, perceptron (from SNoW), winnow (from SNoW).
 
     syntax: paramsearch <algorithm> <trainingfile> [extra]
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
   srand48((unsigned long int)time(NULL));
 
   // welcome message
-  fprintf(stderr,"\nparamsearch v 1.2\n\n");
+  fprintf(stderr,"\nparamsearch v 1.3\n\n");
   fprintf(stderr,"Heuristic parameter optimization search for IB1, IGTree, TRIBL2, Fambl,\n");
   fprintf(stderr,"Ripper, SVM-light, Maximum entropy, C4.5, Winnow, Perceptron.\n\n");
   fprintf(stderr,"Copyright 2003-2011 Tilburg University, ILK Research Group\n");
@@ -93,10 +93,10 @@ int main(int argc, char *argv[])
       (argc>4))
     {
       fprintf(stderr,"Usage: paramsearch <algorithm> <trainingfile> [extra]\n\n");
-      fprintf(stderr,"where <algorithm> is ib1, ib1-bin, ibn, igtree, tribl2, fambl, svmlight,\n");
-      fprintf(stderr,"ripper, maxent, c4.5, winnow, or perceptron, and [extra] is an optional\n");
-      fprintf(stderr,"metric modifier (ib1 only), or the number of classes (winnow & perceptron).\n");
-      fprintf(stderr,"\n");
+      fprintf(stderr,"where <algorithm> is ib1, ib1-bin, ibn, igtree, ib1-sparse, tribl2, fambl,\n");
+      fprintf(stderr,"svmlight, ripper, maxent, c4.5, winnow, or perceptron, and [extra] is an\n");
+      fprintf(stderr,"optional metric modifier (ib1 only), or the number of classes (winnow and\n");
+      fprintf(stderr,"perceptron).\n\n");
       fprintf(stderr,"Note: <trainingfile> must adhere to the syntax / assumed format of\n");
       fprintf(stderr,"<algorithm>. ib1-bin is equivalent to ib1 except that all input\n");
       fprintf(stderr,"is binarized. ibn is equivalent to ib1 but works exclusively for\n");
@@ -161,6 +161,13 @@ int main(int argc, char *argv[])
       algo=13;
       strcpy(algostring,"tribl2");
       strcpy(defaultsetting,"TRIBL2.O.gr.k1.");
+    }
+
+  if (strcmp(argv[1],"ib1-sparse")==0)
+    {
+      algo=14;
+      strcpy(algostring,"ib1-sparse");
+      strcpy(defaultsetting,"IB1.O.gr.k1.");
     }
 
   if (strcmp(argv[1],"svmlight")==0)
@@ -252,7 +259,8 @@ int main(int argc, char *argv[])
   if ((algo==0)||
       (algo==11)||
       (algo==12)||
-      (algo==13))
+      (algo==13)||
+      (algo==14))
     {
       result=system("timbl -v > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
@@ -265,7 +273,7 @@ int main(int argc, char *argv[])
       if ((strstr(line,"ommand not found"))||
 	  (strstr(line,"no such")))
 	{
-	  fprintf(stderr,"Error: timbl: command not found.\n\n");
+	  fprintf(stderr,"Error: timbl: command not found\nplease upgrade to a recent version of TiMBL >= 6.4 (http://ilk.uvt.nl/timbl).\n\n");
 	  exit(1);
 	}
       fprintf(stderr,"using TiMBL version:\n%s\n",
@@ -521,7 +529,8 @@ int main(int argc, char *argv[])
       (algo==6)||
       (algo==11)||
       (algo==12)||
-      (algo==13))
+      (algo==13)||
+      (algo==14))
     {
       if (DEBUG)
 	fprintf(stderr,"checking setting redundancies\n");
@@ -649,7 +658,12 @@ int main(int argc, char *argv[])
   // check the m-string
   if (argc==4)
     {
-      if ((algo==0)&&(argv[3][0]!=':'))
+      if (((algo==0)||
+	   (algo==11)||
+	   (algo==12)||
+	   (algo==13)||
+	   (algo==14))&&
+	  (argv[3][0]!=':'))
 	{
 	  fprintf(stderr,"Error: metric string \"%s\" is not a proper metric modifier\n\n",
 		  argv[3]);
@@ -673,9 +687,13 @@ int main(int argc, char *argv[])
 		      metricstring);
 	      sprintf(metricstring,"%d",nrclasses-1);
 	    }
-	  if (algo==0)
+	  if ((algo==0)||
+	      (algo==11)||
+	      (algo==12)||
+	      (algo==13)||
+	      (algo==14))
 	    {
-	      algo=3;
+	      // algo=3;
 	      fprintf(stderr,"adding \"%s\" to TiMBL metric parameter\n",
 		      metricstring);
 	    }

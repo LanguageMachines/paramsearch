@@ -4,7 +4,7 @@ CC = gcc
 
 # You shouldn't need to make any more changes below this line.
 
-all:	ana-convert generate-steplist getlast10percent makenextlevel-igtree makenextlevel-tribl2 makenextlevel-ib1-bin makenextlevel-ibn makenextlevel-fambl makenextlevel-ripper makenextlevel-svmlight makenextlevel-ib1 makenextlevel-maxent makenextlevel-c4.5 makenextlevel-winnow makenextlevel-perceptron meanstd paramsearch partition-factor randomize runfull-ib1-bin runfull-fambl runfull-ripper runfull-svmlight runfull-ib1 runfull-maxent runfull-c4.5 runfull-winnow runfull-perceptron runfull-ibn runfull-igtree runfull-tribl2 executable
+all:	ana-convert generate-steplist getlast10percent makenextlevel-igtree makenextlevel-tribl2 makenextlevel-ib1-sparse makenextlevel-ib1-bin makenextlevel-ibn makenextlevel-fambl makenextlevel-ripper makenextlevel-svmlight makenextlevel-ib1 makenextlevel-maxent makenextlevel-c4.5 makenextlevel-winnow makenextlevel-perceptron meanstd paramsearch partition-factor randomize runfull-ib1-bin runfull-fambl runfull-ripper runfull-svmlight runfull-ib1 runfull-maxent runfull-c4.5 runfull-winnow runfull-perceptron runfull-ibn runfull-igtree runfull-tribl2 runfull-ib1-sparse executable
 
 executable:
 	chmod +x *.csh *.pl
@@ -25,6 +25,9 @@ makenextlevel-ibn:	makenextlevel-ibn.c
 	$(CC) $(C_ARGS) -o $@ $^
 
 makenextlevel-igtree:	makenextlevel-igtree.c
+	$(CC) $(C_ARGS) -o $@ $^
+
+makenextlevel-ib1-sparse:	makenextlevel-ib1-sparse.c
 	$(CC) $(C_ARGS) -o $@ $^
 
 makenextlevel-tribl2:	makenextlevel-tribl2.c
@@ -87,6 +90,12 @@ runfull-svmlight:	runfull-svmlight.c
 runfull-ib1:	runfull-ib1.c
 	$(CC) $(C_ARGS) -o $@ $^
 
+runfull-tribl2:	runfull-tribl2.c
+	$(CC) $(C_ARGS) -o $@ $^
+
+runfull-ib1-sparse:	runfull-ib1-sparse.c
+	$(CC) $(C_ARGS) -o $@ $^
+
 runfull-maxent:	runfull-maxent.c
 	$(CC) $(C_ARGS) -o $@ $^
 
@@ -100,4 +109,4 @@ runfull-perceptron:	runfull-perceptron.c
 	$(CC) $(C_ARGS) -o $@ $^
 
 clean:
-	-rm ana-convert generate-steplist getlast10percent makenextlevel-ibn makenextlevel-ib1-bin makenextlevel-fambl makenextlevel-igtree makenextlevel-tribl2 makenextlevel-ripper makenextlevel-svmlight makenextlevel-ib1 makenextlevel-maxent makenextlevel-c4.5 makenextlevel-winnow makenextlevel-perceptron meanstd paramsearch partition-factor randomize runfull-ib1-bin runfull-fambl runfull-ripper runfull-svmlight runfull-ib1 runfull-maxent runfull-c4.5 runfull-winnow runfull-perceptron runfull-ibn runfull-igtree runfull-tribl2
+	-rm ana-convert generate-steplist getlast10percent makenextlevel-ibn makenextlevel-ib1-bin makenextlevel-fambl makenextlevel-igtree makenextlevel-tribl2 makenextlevel-ib1-sparse makenextlevel-ripper makenextlevel-svmlight makenextlevel-ib1 makenextlevel-maxent makenextlevel-c4.5 makenextlevel-winnow makenextlevel-perceptron meanstd paramsearch partition-factor randomize runfull-ib1-bin runfull-fambl runfull-ripper runfull-svmlight runfull-ib1 runfull-maxent runfull-c4.5 runfull-winnow runfull-perceptron runfull-ibn runfull-igtree runfull-tribl2 runfull-ib1-sparse
