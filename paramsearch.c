@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
     }
   if (algo==5)
     {
-      result=system("ripper > algocheck > 2>&1\n");
+      result=system("ripper > algocheck 2>&1\n");
       bron=fopen("algocheck","r");
       if (bron==NULL)
 	{
