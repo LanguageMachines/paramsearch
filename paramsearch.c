@@ -270,7 +270,7 @@ int main(int argc, char *argv[])
 	  exit(1);
 	}
       resultc=fgets(line,MAXLINELEN,bron);
-      if ((strstr(line,"ommand not found"))||
+      if ((strstr(line,"Command not found"))||
 	  (strstr(line,"no such")))
 	{
 	  fprintf(stderr,"Error: timbl: command not found\nplease upgrade to a recent version of TiMBL >= 6.4 (http://ilk.uvt.nl/timbl).\n\n");
