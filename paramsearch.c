@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
       (argc>4))
     {
       fprintf(stderr,"Usage: paramsearch <algorithm> <trainingfile> [extra]\n\n");
-      fprintf(stderr,"where <algorithm> is ib1, ib1-bin, ibn, igtree, ib1-sparse, tribl2, fambl,\n");
+      fprintf(stderr,"where <algorithm> is ib1, ib1-bin, ibn, igtree, ib1-sparse,ib1-tabbed, tribl2, fambl,\n");
       fprintf(stderr,"svmlight, ripper, maxent, c4.5, winnow, or perceptron, and [extra] is an\n");
       fprintf(stderr,"optional metric modifier (ib1 only), or the number of classes (winnow and\n");
       fprintf(stderr,"perceptron).\n\n");
@@ -167,6 +167,13 @@ int main(int argc, char *argv[])
     {
       algo=14;
       strcpy(algostring,"ib1-sparse");
+      strcpy(defaultsetting,"IB1.O.gr.k1.");
+    }
+
+  if (strcmp(argv[1],"ib1-tabbed")==0)
+    {
+      algo=14;
+      strcpy(algostring,"ib1-tabbed");
       strcpy(defaultsetting,"IB1.O.gr.k1.");
     }
 
